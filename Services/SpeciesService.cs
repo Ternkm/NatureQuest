@@ -1,6 +1,12 @@
-﻿namespace NatureQuest.Services
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NatureQuest.Models;
+
+namespace NatureQuest.Services
 {
-    public class SpeciesService
+    public interface SpeciesService
     {
+        Task<IEnumerable<Species>> GetAllAsync();
+        Task<Species?> GetByIdAsync(int id);
     }
 }
