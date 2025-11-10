@@ -12,7 +12,10 @@ namespace NatureQuest.Models
         public string SpeciesName { get; set; } = string.Empty;
 
         [Required]
-        public string Location { get; set; } = string.Empty;
+        [Display(Name = "Location Observed")]
+        public string LocationName { get; set; } = string.Empty;
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
 
         [Display(Name = "Date Observed")]
         [DataType(DataType.Date)]
