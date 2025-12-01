@@ -1,0 +1,49 @@
+﻿@model NatureQuest.ViewModels.ObservationViewModel
+
+@{
+    ViewData["Title"] = "Observation Details";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Species</dt>
+            <dd class="col-sm-9">@Model.SpeciesName</dd>
+
+            <dt class="col-sm-3">Location</dt>
+            <dd class="col-sm-9">@Model.LocationName</dd>
+
+            <dt class="col-sm-3">Date Observed</dt>
+            <dd class="col-sm-9">@Model.DateObserved.ToShortDateString()</dd>
+
+            <dt class="col-sm-3">Latitude</dt>
+            <dd class="col-sm-9">@Model.Latitude</dd>
+
+            <dt class="col-sm-3">Longitude</dt>
+            <dd class="col-sm-9">@Model.Longitude</dd>
+
+            <dt class="col-sm-3">Notes</dt>
+            <dd class="col-sm-9">@Model.Notes</dd>
+
+            <dt class="col-sm-3">Image</dt>
+            <dd class="col-sm-9">
+                @if (Model.HasImage)
+                {
+                    <img src="@Model.ImagePath" alt="Observation Image" class="img-thumbnail" style="max-width:300px;" />
+                }
+                else
+                {
+                    <span class="text-muted">No image provided</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ObservationId" class="btn btn-warning">Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.ObservationId" class="btn btn-danger">Delete</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
