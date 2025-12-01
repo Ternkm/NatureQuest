@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36414.22
+VisualStudioVersion = 17.14.36414.22 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NatureQuest", "NatureQuest.csproj", "{F79E2EA6-39F0-4A46-8B0E-E3BB06E971EF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NatureQuest.Tests", "..\NatureQuest.Tests\NatureQuest.Tests.csproj", "{0407EACA-A8CE-4BED-B426-8FA746689CE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{F79E2EA6-39F0-4A46-8B0E-E3BB06E971EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F79E2EA6-39F0-4A46-8B0E-E3BB06E971EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F79E2EA6-39F0-4A46-8B0E-E3BB06E971EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0407EACA-A8CE-4BED-B426-8FA746689CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0407EACA-A8CE-4BED-B426-8FA746689CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0407EACA-A8CE-4BED-B426-8FA746689CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0407EACA-A8CE-4BED-B426-8FA746689CE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

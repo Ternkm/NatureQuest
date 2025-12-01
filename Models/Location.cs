@@ -7,11 +7,10 @@ namespace NatureQuest.Models
         public int Id { get; set; }
 
         [Required]
-        public string LocationName { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
         public string? Region { get; set; }
 
-        public double? Latitude { get; set; } 
-        public double? Longitude { get; set; }
+        public string? Coordinates { get; set; } // optional for map use
     }
 }

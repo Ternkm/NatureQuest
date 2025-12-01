@@ -4,52 +4,55 @@ using NatureQuest.Services;
 
 namespace NatureQuest.Controllers
 {
-    public class SpeciesController : Controller
+    public class SpeciesController: Controller
     {
-        private readonly ISpeciesService _speciesService;
+        private readonly SpeciesService _speciesService;
 
         // Inject SpeciesService
-        public SpeciesController(ISpeciesService speciesService)
+        public SpeciesController(SpeciesService speciesService)
         {
             _speciesService = speciesService;
         }
 
         // GET: Species
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var speciesList = _speciesService.GetAllAsync();
+            var speciesList = _speciesService.GetAllSpecies();
             return View(speciesList);
         }
 
         // GET: Species/Details/5
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
-            var species = _speciesService.GetByIdAsync(id);
+            var species = _speciesService.GetSpeciesById(id);
             if (species == null)
                 return NotFound();
             return View(species);
         }
 
         // GET: Species/Create
-        public IActionResult Create() => View();
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         // POST: Species/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Species species)
+        public IActionResult Create(Species species)
         {
             if (ModelState.IsValid)
             {
-                await _speciesService.AddAsync(species);
+                _speciesService.AddSpecies(species);
                 return RedirectToAction(nameof(Index));
             }
             return View(species);
         }
 
         // GET: Species/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
-            var species = await _speciesService.GetByIdAsync(id);
+            var species = _speciesService.GetSpeciesById(id);
             if (species == null)
                 return NotFound();
             return View(species);
@@ -58,11 +61,11 @@ namespace NatureQuest.Controllers
         // POST: Species/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Species species)
+        public IActionResult Edit(Species species)
         {
             if (ModelState.IsValid)
             {
-                await _speciesService.UpdateAsync(species);
+                _speciesService.UpdateSpecies(species);
                 return RedirectToAction(nameof(Index));
             }
             return View(species);
@@ -71,7 +74,7 @@ namespace NatureQuest.Controllers
         // GET: Species/Delete/5
         public IActionResult Delete(int id)
         {
-            var species = _speciesService.GetByIdAsync(id);
+            var species = _speciesService.GetSpeciesById(id);
             if (species == null)
                 return NotFound();
             return View(species);
@@ -80,9 +83,9 @@ namespace NatureQuest.Controllers
         // POST: Species/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            await _speciesService.DeleteAsync(id);
+            _speciesService.DeleteSpecies(id);
             return RedirectToAction(nameof(Index));
         }
     }
