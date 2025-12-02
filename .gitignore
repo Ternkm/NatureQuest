@@ -426,3 +426,16 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Build artifacts
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# IDE files
+.vs/
+*.user
+*.suo
+*.log
