@@ -39,13 +39,13 @@
       "RelativeMoniker": "D:0:0:{F79E2EA6-39F0-4A46-8B0E-E3BB06E971EF}|NatureQuest.csproj|solutionrelative:models\\location.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0407EACA-A8CE-4BED-B426-8FA746689CE7}|..\\NatureQuest.Tests\\NatureQuest.Tests.csproj|c:\\users\\jesid\\source\\repos\\naturequest.tests\\speciesservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jesid\\source\\repos\\NatureQuest.Tests\\NatureQuest.Tests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0407EACA-A8CE-4BED-B426-8FA746689CE7}|..\\NatureQuest.Tests\\NatureQuest.Tests.csproj|c:\\users\\jesid\\source\\repos\\naturequest.tests\\observationservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jesid\\source\\repos\\NatureQuest.Tests\\SpeciesServiceTests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0407EACA-A8CE-4BED-B426-8FA746689CE7}|..\\NatureQuest.Tests\\NatureQuest.Tests.csproj|c:\\users\\jesid\\source\\repos\\naturequest.tests\\naturequest.tests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\jesid\\source\\repos\\NatureQuest.Tests\\ObservationServiceTests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -67,8 +67,7 @@
               "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAACcAAAAAAAAAAAAAACkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-30T21:18:53.696Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-30T21:18:53.696Z"
             },
             {
               "$type": "Document",
@@ -93,8 +92,7 @@
               "RelativeToolTip": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-12-01T01:02:00.905Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-01T01:02:00.905Z"
             },
             {
               "$type": "Document",
@@ -106,8 +104,7 @@
               "RelativeToolTip": "ViewModels\\ObservationViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-30T21:32:32.399Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-30T21:32:32.399Z"
             },
             {
               "$type": "Document",
@@ -119,8 +116,7 @@
               "RelativeToolTip": "Services\\ObservationService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-28T20:10:12.538Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T20:10:12.538Z"
             },
             {
               "$type": "Document",
@@ -132,8 +128,7 @@
               "RelativeToolTip": "Models\\Observation.cs",
               "ViewState": "AgIAABcAAAAAAAAAAAAAwAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-30T22:20:23.546Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-30T22:20:23.546Z"
             },
             {
               "$type": "Document",
@@ -145,8 +140,7 @@
               "RelativeToolTip": "Models\\Location.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-30T22:20:20.418Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-30T22:20:20.418Z"
             },
             {
               "$type": "Document",
@@ -158,8 +152,7 @@
               "RelativeToolTip": "ViewModels\\SpeciesViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-30T22:03:58.684Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-30T22:03:58.684Z"
             },
             {
               "$type": "Document",
@@ -171,12 +164,11 @@
               "RelativeToolTip": "Models\\Species.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-28T20:14:18.037Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T20:14:18.037Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 9,
               "Title": "NatureQuest.Tests.csproj",
               "DocumentMoniker": "C:\\Users\\jesid\\source\\repos\\NatureQuest.Tests\\NatureQuest.Tests.csproj",
               "RelativeDocumentMoniker": "..\\NatureQuest.Tests\\NatureQuest.Tests.csproj",
@@ -184,12 +176,11 @@
               "RelativeToolTip": "..\\NatureQuest.Tests\\NatureQuest.Tests.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-11-28T19:47:18.13Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-28T19:47:18.13Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "SpeciesServiceTests.cs",
               "DocumentMoniker": "C:\\Users\\jesid\\source\\repos\\NatureQuest.Tests\\SpeciesServiceTests.cs",
               "RelativeDocumentMoniker": "..\\NatureQuest.Tests\\SpeciesServiceTests.cs",
@@ -201,7 +192,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ObservationServiceTests.cs",
               "DocumentMoniker": "C:\\Users\\jesid\\source\\repos\\NatureQuest.Tests\\ObservationServiceTests.cs",
               "RelativeDocumentMoniker": "..\\NatureQuest.Tests\\ObservationServiceTests.cs",
