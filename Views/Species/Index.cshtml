@@ -1,0 +1,23 @@
+@model IEnumerable<NatureQuest.Models.Species>
+
+<h2>Species List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Common Name</th>
+            <th>Scientific Name</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.CommonName</td>
+            <td>@item.ScientificName</td>
+            <td>@item.Category</td>
+        </tr>
+    }
+    </tbody>
+</table>

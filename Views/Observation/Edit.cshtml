@@ -1,0 +1,71 @@
+﻿@model NatureQuest.ViewModels.ObservationViewModel
+
+@{
+    ViewData["Title"] = "Edit Observation";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post" class="needs-validation" novalidate>
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="ObservationId" />
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="SpeciesName" class="form-label"></label>
+            <select asp-for="SpeciesName" class="form-select" asp-items="Model.SpeciesList">
+                <option value="">-- Select Species --</option>
+            </select>
+            <input asp-for="SpeciesName" class="form-control mt-1" placeholder="Or type a new species..." />
+            <span asp-validation-for="SpeciesName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="LocationName" class="form-label"></label>
+            <select asp-for="LocationName" class="form-select" asp-items="Model.LocationList">
+                <option value="">-- Select Location --</option>
+            </select>
+            <input asp-for="LocationName" class="form-control mt-1" placeholder="Or type a new location..." />
+            <span asp-validation-for="LocationName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Latitude" class="form-label"></label>
+            <input asp-for="Latitude" class="form-control" />
+            <span asp-validation-for="Latitude" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="Longitude" class="form-label"></label>
+            <input asp-for="Longitude" class="form-control" />
+            <span asp-validation-for="Longitude" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DateObserved" class="form-label"></label>
+        <input asp-for="DateObserved" type="date" class="form-control" />
+        <span asp-validation-for="DateObserved" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImagePath" class="form-label">Image URL</label>
+        <input asp-for="ImagePath" class="form-control" />
+        <span asp-validation-for="ImagePath" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
