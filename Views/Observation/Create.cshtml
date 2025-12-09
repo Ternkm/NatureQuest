@@ -11,7 +11,7 @@
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label asp-for="SpeciesName" class="form-label"></label>
+            <label asp-for="SpeciesName" class="form-label"></label><span class="text-danger">*</span>
             <select asp-for="SpeciesName" class="form-select" asp-items="Model.SpeciesList">
                 <option value="">-- Select Species --</option>
             </select>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="col-md-6 mb-3">
-            <label asp-for="LocationName" class="form-label"></label>
+            <label asp-for="LocationName" class="form-label"></label><span class="text-danger">*</span>
             <select asp-for="LocationName" class="form-select" asp-items="Model.LocationList">
                 <option value="">-- Select Location --</option>
             </select>

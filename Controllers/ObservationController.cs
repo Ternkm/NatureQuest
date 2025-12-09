@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NatureQuest.Models;
 using NatureQuest.Services;
 using NatureQuest.ViewModels;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -60,6 +60,7 @@ namespace NatureQuest.Controllers
         }
 
         // GET: Observation/Create
+        [Authorize(Roles = "Guest, Admin")]
         public async Task<IActionResult> Create()
         {
             var vm = new ObservationViewModel();
@@ -69,6 +70,7 @@ namespace NatureQuest.Controllers
 
         // POST: Observation/Create
         [HttpPost]
+        [Authorize(Roles = "Guest, Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ObservationViewModel vm)
         {
@@ -77,6 +79,7 @@ namespace NatureQuest.Controllers
                 await PopulateDropdownsWithDefaults(vm);
                 return View(vm);
             }
+            
 
             // Add species if not exists
             if (!string.IsNullOrWhiteSpace(vm.SpeciesName))
@@ -112,6 +115,7 @@ namespace NatureQuest.Controllers
         }
 
         // GET: Observation/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var obs = await _service.GetObservationByIdAsync(id);
@@ -135,6 +139,7 @@ namespace NatureQuest.Controllers
 
         // POST: Observation/Edit/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ObservationViewModel vm)
         {
@@ -179,6 +184,7 @@ namespace NatureQuest.Controllers
         }
 
         // GET: Observation/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var obs = await _service.GetObservationByIdAsync(id);
@@ -201,6 +207,7 @@ namespace NatureQuest.Controllers
 
         // POST: Observation/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
