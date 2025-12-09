@@ -33,22 +33,18 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Seed roles and assign them
+// Apply migrations and seed roles/users in one scope
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var services = scope.ServiceProvider;
+    var db = services.GetRequiredService<ApplicationDbContext>();
+    //db.Database.Migrate();
 
-    try
-    {
-        SeedRolesAsync(roleManager, userManager).GetAwaiter().GetResult();
-    }
-    catch (Exception ex)
-    {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Error seeding roles");
-    }
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+    SeedRolesAsync(roleManager, userManager).GetAwaiter().GetResult();
 }
+
 
 static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
 {
@@ -62,18 +58,56 @@ static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager, UserMana
         }
     }
 
-    // Assign a user to Admin role
-    var adminUser = await userManager.FindByEmailAsync("admin@NatureQuest.com");
-    if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
+    // Admin user
+    var adminEmail = "admin@NatureQuest.com";
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if (adminUser == null)
     {
-        await userManager.AddToRoleAsync(adminUser, "Admin");
+        adminUser = new IdentityUser
+        {
+            UserName = adminEmail,
+            Email = adminEmail,
+            EmailConfirmed = true
+        };
+        var createResult = await userManager.CreateAsync(adminUser, "Admin123!");
+        if (!createResult.Succeeded)
+        {
+            foreach (var e in createResult.Errors)
+                Console.WriteLine($"[Seed] Admin create error: {e.Code} - {e.Description}");
+        }
     }
 
-    // Assign a user to Guest role
-    var guestUser = await userManager.FindByEmailAsync("guest@NatureQuest.com");
-    if (guestUser != null && !await userManager.IsInRoleAsync(guestUser, "Guest"))
+    var adminRoleResult = await userManager.AddToRoleAsync(adminUser, "Admin");
+    if (!adminRoleResult.Succeeded)
     {
-        await userManager.AddToRoleAsync(guestUser, "Guest");
+        foreach (var e in adminRoleResult.Errors)
+            Console.WriteLine($"[Seed] Admin role assign error: {e.Code} - {e.Description}");
+    }
+
+    // Guest user
+    var guestEmail = "guest@NatureQuest.com";
+    var guestUser = await userManager.FindByEmailAsync(guestEmail);
+    if (guestUser == null)
+    {
+        guestUser = new IdentityUser
+        {
+            UserName = guestEmail,
+            Email = guestEmail,
+            EmailConfirmed = true
+        };
+        var createResult = await userManager.CreateAsync(guestUser, "GuestPass123!");
+        if (!createResult.Succeeded)
+        {
+            foreach (var e in createResult.Errors)
+                Console.WriteLine($"[Seed] Guest create error: {e.Code} - {e.Description}");
+        }
+    }
+
+    var guestRoleResult = await userManager.AddToRoleAsync(guestUser, "Guest");
+    if (!guestRoleResult.Succeeded)
+    {
+        foreach (var e in guestRoleResult.Errors)
+            Console.WriteLine($"[Seed] Guest role assign error: {e.Code} - {e.Description}");
     }
 }
 
