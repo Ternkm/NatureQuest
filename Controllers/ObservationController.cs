@@ -9,6 +9,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Drawing.Text;
+using NatureQuest.Controllers;
 
 namespace NatureQuest.Controllers
 {
@@ -17,11 +19,13 @@ namespace NatureQuest.Controllers
     {
         private readonly ObservationService _service;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ILogger<ObservationController> _logger;
 
-        public ObservationController(ObservationService service, IWebHostEnvironment webHostEnvironment)
+        public ObservationController(ObservationService service, IWebHostEnvironment webHostEnvironment, ILogger<ObservationController> logger)
         {
             _service = service;
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         // GET: Observation
@@ -69,11 +73,11 @@ namespace NatureQuest.Controllers
 
             await AddSpeciesAndLocationIfMissing(vm);
 
-            string imagePath = null;
-            if (vm.ImageFile != null)
-            {
-                imagePath = await SaveImageFile(vm.ImageFile);
-            }
+            //string imagePath = null;
+            //if (vm.ImageFile != null)
+            //{
+            //    imagePath = await SaveImageFile(vm.ImageFile);
+            //}
 
             var obs = new Observation
             {
@@ -83,7 +87,7 @@ namespace NatureQuest.Controllers
                 Longitude = vm.Longitude,
                 DateObserved = vm.DateObserved,
                 Notes = vm.Notes,
-                ImagePath = imagePath
+                ImagePath = vm.ImagePath
             };
 
             await _service.AddObservationAsync(obs);
@@ -114,10 +118,7 @@ namespace NatureQuest.Controllers
             await AddSpeciesAndLocationIfMissing(vm);
 
             string imagePath = vm.ImagePath;
-            if (vm.ImageFile != null)
-            {
-                imagePath = await SaveImageFile(vm.ImageFile);
-            }
+
 
             var obs = new Observation
             {
@@ -128,7 +129,7 @@ namespace NatureQuest.Controllers
                 Longitude = vm.Longitude,
                 DateObserved = vm.DateObserved,
                 Notes = vm.Notes,
-                ImagePath = imagePath
+                ImagePath = vm.ImagePath
             };
 
             await _service.UpdateObservationAsync(obs);
@@ -198,10 +199,20 @@ namespace NatureQuest.Controllers
             var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
             var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            try
             {
-                await file.CopyToAsync(fileStream);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Upload failed while saving {FilePath}", filePath);
+                throw;
+            }
+
+
 
             // Return relative path for img src
             return $"/images/{uniqueFileName}";

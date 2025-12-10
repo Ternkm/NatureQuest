@@ -33,11 +33,12 @@ namespace NatureQuest.ViewModels
         [Display(Name = "Notes")]
         public string? Notes { get; set; }
 
-        // Remove Image URL, add file upload
-        [Display(Name = "Upload Image")]
-        public IFormFile? ImageFile { get; set; }
+        // File upload? Maybe another time
+        //[Display(Name = "Upload Image")]
+        //public IFormFile? ImageFile { get; set; }
 
         public string? ImagePath { get; set; }
+        public string? ImageUrl { get; set; }
         public bool HasImage => !string.IsNullOrEmpty(ImagePath);
 
         public IEnumerable<SelectListItem>? SpeciesList { get; set; }

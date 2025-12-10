@@ -24,5 +24,6 @@ namespace NatureQuest.Models
         public string? Notes { get; set; }
 
         public string? ImagePath { get; set; } // optional for photos
+        
     }
 }

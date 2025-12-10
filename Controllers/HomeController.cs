@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using NatureQuest.Models;
+using System.Diagnostics;
 
 namespace NatureQuest.Controllers
 {
@@ -7,11 +9,20 @@ namespace NatureQuest.Controllers
         public IActionResult Index()
         {
             return View();
+
         }
 
         public IActionResult About()
         {
             return View();
+        }
+
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
         }
     }
 }

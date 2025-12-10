@@ -35,7 +35,8 @@
                     <td>@obs.Longitude</td>
                     <td>@obs.Notes</td>
                     <td>
-                        @if (obs.HasImage)
+                        @* @if (obs.HasImage) *@
+                        @if (!string.IsNullOrEmpty(obs.ImagePath))
                         {
                             <img src="@obs.ImagePath" alt="Image" class="img-thumbnail" style="max-width:100px;" />
                         }
