@@ -1,29 +1,34 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using NatureQuest.Models;
 using NatureQuest.Services;
 using NatureQuest.ViewModels;
+using NatureQuest.Filters;
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace NatureQuest.Controllers
 {
+    [ServiceFilter(typeof(DropdownPopulateFilter))] // Auto-populate dropdowns
     public class ObservationController : Controller
     {
         private readonly ObservationService _service;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ObservationController(ObservationService service)
+        public ObservationController(ObservationService service, IWebHostEnvironment webHostEnvironment)
         {
             _service = service;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Observation
         public async Task<IActionResult> Index()
         {
             var observations = await _service.GetAllObservationsAsync();
-
-            var vm = observations.Select(o => new ObservationViewModel
+            var vmList = observations.Select(o => new ObservationViewModel
             {
                 ObservationId = o.Id,
                 SpeciesName = o.SpeciesName,
@@ -35,7 +40,7 @@ namespace NatureQuest.Controllers
                 ImagePath = o.ImagePath
             }).ToList();
 
-            return View(vm);
+            return View(vmList);
         }
 
         // GET: Observation/Details/5
@@ -43,29 +48,14 @@ namespace NatureQuest.Controllers
         {
             var obs = await _service.GetObservationByIdAsync(id);
             if (obs == null) return NotFound();
-
-            var vm = new ObservationViewModel
-            {
-                ObservationId = obs.Id,
-                SpeciesName = obs.SpeciesName,
-                LocationName = obs.LocationName,
-                Latitude = obs.Latitude,
-                Longitude = obs.Longitude,
-                DateObserved = obs.DateObserved,
-                Notes = obs.Notes,
-                ImagePath = obs.ImagePath
-            };
-
-            return View(vm);
+            return View(MapObservationToViewModel(obs));
         }
 
         // GET: Observation/Create
         [Authorize(Roles = "Guest, Admin")]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            var vm = new ObservationViewModel();
-            await PopulateDropdownsWithDefaults(vm);
-            return View(vm);
+            return View(new ObservationViewModel());
         }
 
         // POST: Observation/Create
@@ -75,28 +65,14 @@ namespace NatureQuest.Controllers
         public async Task<IActionResult> Create(ObservationViewModel vm)
         {
             if (!ModelState.IsValid)
-            {
-                await PopulateDropdownsWithDefaults(vm);
                 return View(vm);
-            }
-            
 
-            // Add species if not exists
-            if (!string.IsNullOrWhiteSpace(vm.SpeciesName))
-            {
-                var existingSpecies = (await _service.GetAllSpeciesAsync())
-                                        .FirstOrDefault(s => s.CommonName.ToLower() == vm.SpeciesName.ToLower());
-                if (existingSpecies == null)
-                    await _service.AddSpeciesAsync(new Species { CommonName = vm.SpeciesName });
-            }
+            await AddSpeciesAndLocationIfMissing(vm);
 
-            // Add location if not exists
-            if (!string.IsNullOrWhiteSpace(vm.LocationName))
+            string imagePath = null;
+            if (vm.ImageFile != null)
             {
-                var existingLocation = (await _service.GetAllLocationsAsync())
-                                        .FirstOrDefault(l => l.LocationName.ToLower() == vm.LocationName.ToLower());
-                if (existingLocation == null)
-                    await _service.AddLocationAsync(new Location { LocationName = vm.LocationName });
+                imagePath = await SaveImageFile(vm.ImageFile);
             }
 
             var obs = new Observation
@@ -107,7 +83,7 @@ namespace NatureQuest.Controllers
                 Longitude = vm.Longitude,
                 DateObserved = vm.DateObserved,
                 Notes = vm.Notes,
-                ImagePath = vm.ImagePath
+                ImagePath = imagePath
             };
 
             await _service.AddObservationAsync(obs);
@@ -116,25 +92,14 @@ namespace NatureQuest.Controllers
 
         // GET: Observation/Edit/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            var obs = await _service.GetObservationByIdAsync(id);
+            if (id == null) return NotFound();
+
+            var obs = await _service.GetObservationByIdAsync(id.Value);
             if (obs == null) return NotFound();
 
-            var vm = new ObservationViewModel
-            {
-                ObservationId = obs.Id,
-                SpeciesName = obs.SpeciesName,
-                LocationName = obs.LocationName,
-                Latitude = obs.Latitude,
-                Longitude = obs.Longitude,
-                DateObserved = obs.DateObserved,
-                Notes = obs.Notes,
-                ImagePath = obs.ImagePath
-            };
-
-            await PopulateDropdownsWithDefaults(vm);
-            return View(vm);
+            return View(MapObservationToViewModel(obs));
         }
 
         // POST: Observation/Edit/5
@@ -144,27 +109,14 @@ namespace NatureQuest.Controllers
         public async Task<IActionResult> Edit(ObservationViewModel vm)
         {
             if (!ModelState.IsValid)
-            {
-                await PopulateDropdownsWithDefaults(vm);
                 return View(vm);
-            }
 
-            // Add species if not exists
-            if (!string.IsNullOrWhiteSpace(vm.SpeciesName))
-            {
-                var existingSpecies = (await _service.GetAllSpeciesAsync())
-                                        .FirstOrDefault(s => s.CommonName.ToLower() == vm.SpeciesName.ToLower());
-                if (existingSpecies == null)
-                    await _service.AddSpeciesAsync(new Species { CommonName = vm.SpeciesName });
-            }
+            await AddSpeciesAndLocationIfMissing(vm);
 
-            // Add location if not exists
-            if (!string.IsNullOrWhiteSpace(vm.LocationName))
+            string imagePath = vm.ImagePath;
+            if (vm.ImageFile != null)
             {
-                var existingLocation = (await _service.GetAllLocationsAsync())
-                                        .FirstOrDefault(l => l.LocationName.ToLower() == vm.LocationName.ToLower());
-                if (existingLocation == null)
-                    await _service.AddLocationAsync(new Location { LocationName = vm.LocationName });
+                imagePath = await SaveImageFile(vm.ImageFile);
             }
 
             var obs = new Observation
@@ -176,7 +128,7 @@ namespace NatureQuest.Controllers
                 Longitude = vm.Longitude,
                 DateObserved = vm.DateObserved,
                 Notes = vm.Notes,
-                ImagePath = vm.ImagePath
+                ImagePath = imagePath
             };
 
             await _service.UpdateObservationAsync(obs);
@@ -189,20 +141,7 @@ namespace NatureQuest.Controllers
         {
             var obs = await _service.GetObservationByIdAsync(id);
             if (obs == null) return NotFound();
-
-            var vm = new ObservationViewModel
-            {
-                ObservationId = obs.Id,
-                SpeciesName = obs.SpeciesName,
-                LocationName = obs.LocationName,
-                Latitude = obs.Latitude,
-                Longitude = obs.Longitude,
-                DateObserved = obs.DateObserved,
-                Notes = obs.Notes,
-                ImagePath = obs.ImagePath
-            };
-
-            return View(vm);
+            return View(MapObservationToViewModel(obs));
         }
 
         // POST: Observation/Delete/5
@@ -216,47 +155,56 @@ namespace NatureQuest.Controllers
         }
 
         // --- Helper Methods ---
-
-        private async Task PopulateDropdownsWithDefaults(ObservationViewModel vm)
+        private async Task AddSpeciesAndLocationIfMissing(ObservationViewModel vm)
         {
-            var species = (await _service.GetAllSpeciesAsync()).ToList();
-            var locations = (await _service.GetAllLocationsAsync()).ToList();
-
-            // Default species
-            if (!species.Any())
+            if (!string.IsNullOrWhiteSpace(vm.SpeciesName))
             {
-                var defaultSpecies = new List<Species>
-                {
-                    new Species { CommonName = "Bald Eagle" },
-                    new Species { CommonName = "Red Fox" },
-                    new Species { CommonName = "Monarch Butterfly" },
-                    new Species { CommonName = "American Robin"},
-                    new Species { CommonName = "Raccoon" },
-                    new Species { CommonName = "Eastern Gray Squirrel" },
-                    new Species { CommonName = "Painted Turtle" },
-                    new Species { CommonName = "American Goldfinch" },
-                };
-                foreach (var s in defaultSpecies)
-                    await _service.AddSpeciesAsync(s);
-                species = (await _service.GetAllSpeciesAsync()).ToList();
+                var existingSpecies = (await _service.GetAllSpeciesAsync())
+                    .FirstOrDefault(s => s.CommonName.Equals(vm.SpeciesName, StringComparison.OrdinalIgnoreCase));
+                if (existingSpecies == null)
+                    await _service.AddSpeciesAsync(new Species { CommonName = vm.SpeciesName });
             }
 
-            // Default locations
-            if (!locations.Any())
+            if (!string.IsNullOrWhiteSpace(vm.LocationName))
             {
-                var defaultLocations = new List<Location>
-                {
-                    new Location { LocationName = "Prairie Preserve" },
-                    new Location { LocationName = "River Bend" },
-                    new Location { LocationName = "Forest Glade" }
-                };
-                foreach (var l in defaultLocations)
-                    await _service.AddLocationAsync(l);
-                locations = (await _service.GetAllLocationsAsync()).ToList();
+                var existingLocation = (await _service.GetAllLocationsAsync())
+                    .FirstOrDefault(l => l.LocationName.Equals(vm.LocationName, StringComparison.OrdinalIgnoreCase));
+                if (existingLocation == null)
+                    await _service.AddLocationAsync(new Location { LocationName = vm.LocationName });
+            }
+        }
+
+        private ObservationViewModel MapObservationToViewModel(Observation o) => new ObservationViewModel
+        {
+            ObservationId = o.Id,
+            SpeciesName = o.SpeciesName,
+            LocationName = o.LocationName,
+            Latitude = o.Latitude,
+            Longitude = o.Longitude,
+            DateObserved = o.DateObserved,
+            Notes = o.Notes,
+            ImagePath = o.ImagePath
+        };
+
+        private async Task<string> SaveImageFile(Microsoft.AspNetCore.Http.IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return null;
+
+            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
             }
 
-            vm.SpeciesList = species.Select(s => new SelectListItem { Value = s.CommonName, Text = s.CommonName });
-            vm.LocationList = locations.Select(l => new SelectListItem { Value = l.LocationName, Text = l.LocationName });
+            // Return relative path for img src
+            return $"/images/{uniqueFileName}";
         }
     }
 }

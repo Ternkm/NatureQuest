@@ -6,9 +6,10 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="Create" method="post" class="needs-validation" novalidate>
+<form asp-action="Create" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
     @Html.AntiForgeryToken()
 
+    <!-- Species and Location fields -->
     <div class="row">
         <div class="col-md-6 mb-3">
             <label asp-for="SpeciesName" class="form-label"></label><span class="text-danger">*</span>
@@ -29,6 +30,7 @@
         </div>
     </div>
 
+    <!-- Latitude and Longitude -->
     <div class="row">
         <div class="col-md-6 mb-3">
             <label asp-for="Latitude" class="form-label"></label>
@@ -43,27 +45,31 @@
         </div>
     </div>
 
+    <!-- Date Observed -->
     <div class="mb-3">
         <label asp-for="DateObserved" class="form-label"></label>
         <input asp-for="DateObserved" type="date" class="form-control" />
         <span asp-validation-for="DateObserved" class="text-danger"></span>
     </div>
 
+    <!-- Notes -->
     <div class="mb-3">
         <label asp-for="Notes" class="form-label"></label>
         <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
         <span asp-validation-for="Notes" class="text-danger"></span>
     </div>
 
+    <!-- Image Upload -->
     <div class="mb-3">
-        <label asp-for="ImagePath" class="form-label">Image URL</label>
-        <input asp-for="ImagePath" class="form-control" />
-        <span asp-validation-for="ImagePath" class="text-danger"></span>
+        <label asp-for="ImageFile" class="form-label">Upload Image</label>
+        <input asp-for="ImageFile" type="file" class="form-control" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
