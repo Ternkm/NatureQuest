@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -32,9 +33,11 @@ namespace NatureQuest.ViewModels
         [Display(Name = "Notes")]
         public string? Notes { get; set; }
 
-        [Display(Name = "Image URL")]
-        public string? ImagePath { get; set; }
+        // Remove Image URL, add file upload
+        [Display(Name = "Upload Image")]
+        public IFormFile? ImageFile { get; set; }
 
+        public string? ImagePath { get; set; }
         public bool HasImage => !string.IsNullOrEmpty(ImagePath);
 
         public IEnumerable<SelectListItem>? SpeciesList { get; set; }
