@@ -19,6 +19,19 @@ builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<ObservationService>();
 builder.Services.AddRazorPages();
 
+//Fresh baked Cookies!
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;                  
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; 
+    options.Cookie.SameSite = SameSiteMode.Strict;   
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60); 
+    options.SlidingExpiration = true;                
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
