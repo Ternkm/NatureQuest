@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
@@ -33,9 +33,9 @@ namespace NatureQuest.ViewModels
         [Display(Name = "Notes")]
         public string? Notes { get; set; }
 
-        // File upload? Maybe another time
-        //[Display(Name = "Upload Image")]
-        //public IFormFile? ImageFile { get; set; }
+        // FILE UPLOAD WORKS NOW
+        [Display(Name = "Upload Image")]
+        public IFormFile? ImageFile { get; set; }
 
         public string? ImagePath { get; set; }
         public string? ImageUrl { get; set; }
