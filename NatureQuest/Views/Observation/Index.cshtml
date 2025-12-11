@@ -1,0 +1,52 @@
+﻿@model IEnumerable<NatureQuest.ViewModels.ObservationViewModel>
+
+@{
+    ViewData["Title"] = "Observations";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-primary">Add New Observation</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Species</th>
+                <th>Location</th>
+                <th>Date Observed</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Notes</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obs in Model)
+            {
+                <tr>
+                    <td>@obs.SpeciesName</td>
+                    <td>@obs.LocationName</td>
+                    <td>@obs.DateObserved.ToShortDateString()</td>
+                    <td>@obs.Latitude</td>
+                    <td>@obs.Longitude</td>
+                    <td>@obs.Notes</td>
+                    <td>
+                        @if (obs.HasImage)
+                        {
+                            <img src="@obs.ImagePath" alt="Image" class="img-thumbnail" style="max-width:100px;" />
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@obs.ObservationId" class="btn btn-info btn-sm">Details</a>
+                        <a asp-action="Edit" asp-route-id="@obs.ObservationId" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@obs.ObservationId" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
