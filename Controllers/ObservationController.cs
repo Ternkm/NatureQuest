@@ -73,11 +73,12 @@ namespace NatureQuest.Controllers
 
             await AddSpeciesAndLocationIfMissing(vm);
 
-            //string imagePath = null;
-            //if (vm.ImageFile != null)
-            //{
-            //    imagePath = await SaveImageFile(vm.ImageFile);
-            //}
+            // --- FIXED: File upload handler ---
+            string savedImagePath = null;
+            if (vm.ImageFile != null)
+            {
+                savedImagePath = await SaveImageFile(vm.ImageFile);
+            }
 
             var obs = new Observation
             {
@@ -87,7 +88,7 @@ namespace NatureQuest.Controllers
                 Longitude = vm.Longitude,
                 DateObserved = vm.DateObserved,
                 Notes = vm.Notes,
-                ImagePath = vm.ImagePath
+                ImagePath = savedImagePath    // store uploaded file path
             };
 
             await _service.AddObservationAsync(obs);
@@ -119,6 +120,11 @@ namespace NatureQuest.Controllers
 
             string imagePath = vm.ImagePath;
 
+            // --- FIXED: allow uploading a new image when editing ---
+            if (vm.ImageFile != null)
+            {
+                imagePath = await SaveImageFile(vm.ImageFile);
+            }
 
             var obs = new Observation
             {
@@ -129,7 +135,7 @@ namespace NatureQuest.Controllers
                 Longitude = vm.Longitude,
                 DateObserved = vm.DateObserved,
                 Notes = vm.Notes,
-                ImagePath = vm.ImagePath
+                ImagePath = imagePath
             };
 
             await _service.UpdateObservationAsync(obs);
@@ -212,9 +218,6 @@ namespace NatureQuest.Controllers
                 throw;
             }
 
-
-
-            // Return relative path for img src
             return $"/images/{uniqueFileName}";
         }
     }
