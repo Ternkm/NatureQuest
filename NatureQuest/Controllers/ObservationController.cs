@@ -73,7 +73,7 @@ namespace NatureQuest.Controllers
 
             await AddSpeciesAndLocationIfMissing(vm);
 
-            // --- FIXED: File upload handler ---
+            
             string savedImagePath = null;
             if (vm.ImageFile != null)
             {
@@ -120,7 +120,7 @@ namespace NatureQuest.Controllers
 
             string imagePath = vm.ImagePath;
 
-            // --- FIXED: allow uploading a new image when editing ---
+            
             if (vm.ImageFile != null)
             {
                 imagePath = await SaveImageFile(vm.ImageFile);
@@ -152,12 +152,12 @@ namespace NatureQuest.Controllers
         }
 
         // POST: Observation/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int ObservationId)
         {
-            await _service.DeleteObservationAsync(id);
+            await _service.DeleteObservationAsync(ObservationId);
             return RedirectToAction(nameof(Index));
         }
 
